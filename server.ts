@@ -5,9 +5,6 @@
  *     <li>users</li>
  *     <li>tuits</li>
  *     <li>likes</li>
- *     <li>messages</li>
- *     <li>bookmarks</li>
- *     <li>follows</li>
  * </ul>
  *
  * Connects to a remote MongoDB instance hosted on the Atlas cloud database
@@ -18,11 +15,12 @@ import CourseController from "./controllers/CourseController";
 import UserController from "./controllers/UserController";
 import TuitController from "./controllers/TuitController";
 import LikeController from "./controllers/LikeController";
-import mongoose from "mongoose";
-import FollowController from "./controllers/FollowController";
-import BookmarkController from "./controllers/BookmarkController";
-import MessageController from "./controllers/MessageController";
+import SessionController from "./controllers/SessionController";
 import AuthenticationController from "./controllers/AuthenticationController";
+import mongoose from "mongoose";
+import GroupController from "./controllers/GroupController";
+const cors = require("cors");
+const session = require("express-session");
 require('dotenv').config()
 
 // require("dotenv").config();
@@ -37,21 +35,13 @@ console.log(process.env.DB_USERNAME);
 const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
 mongoose.connect(connectionString);
 
-const session = require("express-session");
 const app = express();
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin",
-        ["http://localhost:3000"]);
-    //     ["https://affectionate-murdock-553d7f.netlify.app/"]);
-    res.header("Access-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods",
-        "GET, POST, PUT, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
-});
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
 
-const SECRET = 'http://localhost:3000';
+const SECRET = 'process.env.SECRET';
 let sess = {
     secret: SECRET,
     saveUninitialized: true,
@@ -69,10 +59,8 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
 app.use(session(sess))
 app.use(express.json());
 
-
 app.get('/', (req: Request, res: Response) =>
     res.send('Welcome!'));
-
 
 app.get('/add/:a/:b', (req: Request, res: Response) =>
     res.send(req.params.a + req.params.b));
@@ -82,10 +70,9 @@ const courseController = new CourseController(app);
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likesController = LikeController.getInstance(app);
-const followController = FollowController.getInstance(app);
-const bookmarkController = BookmarkController.getInstance(app);
-const messageController = MessageController.getInstance(app);
+SessionController(app);
 AuthenticationController(app);
+GroupController(app);
 /**
  * Start a server listening at port 4000 locally
  * but use environment variable PORT on Heroku if available.

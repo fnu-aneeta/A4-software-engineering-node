@@ -1,6 +1,3 @@
-/**
- * @file RESTful Web service API interface for like resource
- */
 import Like from "../models/likes/Like";
 
 /**

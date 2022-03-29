@@ -1,10 +1,7 @@
-/**
- * @file Implements course interface to CRUD
- * documents in the course collection
- */
-import {Types} from "mongoose";
+import {ObjectId, Types} from "mongoose";
 
 export default interface Course {
+    _id?: ObjectId
     title: string;
     credits?: number;
     syllabus?: string;

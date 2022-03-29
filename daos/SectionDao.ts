@@ -1,21 +1,8 @@
-/**
- * @file Implements DAO managing data storage of section. Uses mongoose SectionModel
- * to integrate with MongoDB
- */
 import SectionDaoI from "../interfaces/SectionDao";
 import Section from "../mongoose/sections/Section";
 import SectionModel from "../mongoose/sections/SectionModel";
 
-/**
- * @class SectionDao Implements Data Access Object managing data storage
- * of Users section
- * @property {SectionDao} sectionDao Private single instance of SectionDao
- */
 export default class SectionDao implements SectionDaoI {
-    /**
-     * Creates singleton DAO instance
-     * @returns SectionDao
-     */
     static instance: SectionDao = new SectionDao();
     private constructor() {}
     static getInstance(): SectionDao {

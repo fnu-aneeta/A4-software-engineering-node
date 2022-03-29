@@ -1,7 +1,3 @@
-/**
- * @file Implements mongoose model to CRUD
- * documents in the section collection
- */
 import mongoose from "mongoose";
 import SectionSchema from "./SectionSchema";
 import Section from "./Section";

@@ -1,6 +1,3 @@
-/**
- * @file Declares class for section for course related data
- */
 export default class Section {
     private name: string = '';
     private seats: number = 50;

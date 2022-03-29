@@ -24,7 +24,7 @@ export default class UserDao implements UserDaoI {
         }
         return UserDao.userDao;
     }
-
+    
     private constructor() {}
 
     /**
@@ -44,6 +44,15 @@ export default class UserDao implements UserDaoI {
         UserModel.findById(uid);
 
     /**
+     * Uses UserModel to retrieve single user document from users collection
+     * by their username
+     * @param {string} username User's username
+     * @returns Promise To be notified when user is retrieved from the database
+     */
+    findUserByUsername = async (username: string): Promise<any> =>
+        UserModel.findOne({username});
+
+    /**
      * Inserts user instance into the database
      * @param {User} user Instance to be inserted into the database
      * @returns Promise To be notified when user is inserted into the database
@@ -61,7 +70,7 @@ export default class UserDao implements UserDaoI {
         UserModel.updateOne(
             {_id: uid},
             {$set: user});
-
+    
     updateUserSalaryByUsername = async (username: string, salary: number): Promise<any> =>
         UserModel.updateOne(
             {username},
@@ -83,12 +92,10 @@ export default class UserDao implements UserDaoI {
     deleteAllUsers = async (): Promise<any> =>
         UserModel.deleteMany({});
 
-    deleteUserByUsername = async (username: string): Promise<any> =>
-        UserModel.deleteOne({username: username});
-
+    deleteUsersByUsername = async (username: string): Promise<any> =>
+      UserModel.deleteMany({username});
+    
     findUserByCredentials = async (username: string, password: string): Promise<any> =>
         UserModel.findOne({username: username, password: password});
-
-    findUserByUsername = async (username: string): Promise<any> =>
-        UserModel.findOne({username});
+    
 };

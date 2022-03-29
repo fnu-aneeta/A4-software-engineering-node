@@ -1,13 +1,6 @@
-/**
- * @file Controller RESTful Web service API interface for tuit resource
- */
 import {Request, Response} from "express";
 import Tuit from "../models/tuits/Tuit";
 
-
-/**
- * This interface implements TuitControllerI
- */
 export default interface TuitControllerI {
     findAllTuits (req: Request, res: Response): void;
     findAllTuitsByUser (req: Request, res: Response): void;

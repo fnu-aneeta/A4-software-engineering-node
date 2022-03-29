@@ -1,11 +1,5 @@
-/**
- * @file RESTful Web service API interface for section resource
- */
 import Section from "../mongoose/sections/Section";
 
-/**
- * @file Declares API for section related data access object methods
- */
 export default interface SectionDao {
     findSectionById(sid: string): Promise<Section>;
     findSectionByIdDeep(sid: string): Promise<Section>;
