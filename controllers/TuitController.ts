@@ -5,6 +5,7 @@ import TuitDao from "../daos/TuitDao";
 import Tuit from "../models/tuits/Tuit";
 import {Express, Request, Response} from "express";
 import TuitControllerI from "../interfaces/TuitControllerI";
+import bodyParser from "body-parser";
 
 /**
  * @class TuitController Implements RESTful Web service API for tuits resource.
@@ -39,6 +40,7 @@ export default class TuitController implements TuitControllerI {
             app.get("/api/users/:uid/tuits", TuitController.tuitController.findAllTuitsByUser);
             app.get("/api/tuits/:uid", TuitController.tuitController.findTuitById);
             app.post("/api/users/:uid/tuits", TuitController.tuitController.createTuitByUser);
+            app.post("api/tuits", TuitController.tuitController.createTuit);
             app.put("/api/tuits/:uid", TuitController.tuitController.updateTuit);
             app.delete("/api/tuits/:uid", TuitController.tuitController.deleteTuit);
         }
@@ -46,6 +48,14 @@ export default class TuitController implements TuitControllerI {
     }
 
     private constructor() {}
+
+    public createTuit(req: Request, res: Response): void {
+        console.info(`tuit: createTuit() ${req.body}`)
+
+        TuitController.tuitDao.createTuit(req.body)
+            .then((tuit: Tuit) => res.json(tuit))
+            .catch((status) => res.json(status));
+    }
 
     /**
      * Retrieves all tuits from the database and returns an array of tuits.
@@ -56,7 +66,7 @@ export default class TuitController implements TuitControllerI {
     findAllTuits = (req: Request, res: Response) =>
         TuitController.tuitDao.findAllTuits()
             .then((tuits: Tuit[]) => res.json(tuits));
-    
+
     /**
      * @param {Request} req Represents request from client, including path
      * parameter tid identifying the primary key of the tuit to be retrieved
@@ -74,13 +84,16 @@ export default class TuitController implements TuitControllerI {
      * @param {Response} res Represents response to client, including the
      * body formatted as JSON arrays containing the tuit objects
      */
-    findAllTuitsByUser = (req: Request, res: Response) => {
+    public findAllTuitsByUser(req: Request, res: Response): void {
+        console.info(`tuit: findTuitsByUser(${req.params.uid})`)
+
         // @ts-ignore
-        let userId = req.params.uid === "my" && req.session['profile'] ?
-            // @ts-ignore
-            req.session['profile']._id : req.params.uid;
-        TuitController.tuitDao.findAllTuitsByUser(userId)
-            .then((tuits: Tuit[]) => res.json(tuits));
+        let uid = req.params.uid === "session" && req.session['profile'] ? req.session['profile']._id : req.params.uid;
+
+
+        TuitController.tuitDao.findAllTuitsByUser(uid)
+            .then((tuits: Tuit[]) => res.json(tuits))
+            .catch((status) => res.json(status));
     }
 
     /**
@@ -98,9 +111,10 @@ export default class TuitController implements TuitControllerI {
             req.session['profile']._id : req.params.uid;
 
         console.log(userId);
-        
+
         TuitController.tuitDao.createTuitByUser(userId, req.body)
-            .then((tuit: Tuit) => res.json(tuit));
+            .then((tuit: Tuit) => res.json(tuit))
+            .catch((status) => res.json(status));
     }
 
     /**

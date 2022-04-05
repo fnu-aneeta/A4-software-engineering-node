@@ -5,6 +5,8 @@
 import TuitModel from "../mongoose/tuits/TuitModel";
 import Tuit from "../models/tuits/Tuit";
 import TuitDaoI from "../interfaces/TuitDaoI";
+import Stats from "../models/tuits/Stats";
+import User from "../models/users/User";
 
 /**
  * @class UserDao Implements Data Access Object managing data storage
@@ -13,13 +15,20 @@ import TuitDaoI from "../interfaces/TuitDaoI";
  */
 export default class TuitDao implements TuitDaoI{
     private static tuitDao: TuitDao | null = null;
+
+    private constructor() {}
+
     public static getInstance = (): TuitDao => {
         if(TuitDao.tuitDao === null) {
             TuitDao.tuitDao = new TuitDao();
         }
         return TuitDao.tuitDao;
     }
-    private constructor() {}
+
+    createTuit = async (tuit: Tuit): Promise<Tuit> =>
+        TuitModel.create(tuit);
+
+
     findAllTuits = async (): Promise<Tuit[]> =>
         TuitModel.find()
             .populate("postedBy")
@@ -33,12 +42,23 @@ export default class TuitDao implements TuitDaoI{
         TuitModel.findById(uid)
             .populate("postedBy")
             .exec();
+
     createTuitByUser = async (uid: string, tuit: Tuit): Promise<Tuit> =>
         TuitModel.create({...tuit, postedBy: uid});
+
+    // public async updateTuitStats(tid: string, newStats: Stats): Promise<object> {
+    //     return TuitModel
+    //         .updateOne({_id: tid}, {$set: {stats: newStats}});
+    // }
+
+    updateTuitStats = async (tid: string, newStats: Stats): Promise<object> =>
+        TuitModel.updateOne({_id: tid}, {$set: {stats: newStats}});
+
     updateTuit = async (tid: string, tuit: Tuit): Promise<any> =>
         TuitModel.updateOne(
             {_id: tid},
             {$set: tuit});
+
     updateLikes = async (tid: string, newStats: any): Promise<any> =>
         TuitModel.updateOne(
             {_id: tid},

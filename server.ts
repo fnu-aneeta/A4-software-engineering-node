@@ -14,7 +14,11 @@ import express, {Request, Response} from 'express';
 import CourseController from "./controllers/CourseController";
 import UserController from "./controllers/UserController";
 import TuitController from "./controllers/TuitController";
-import LikeController from "./controllers/LikeController";
+import {LikeController} from "./controllers/LikeController";
+import {DislikeController} from "./controllers/DislikeController";
+import MessageController from "./controllers/MessageController";
+import FollowController from "./controllers/FollowController";
+import BookmarkController from "./controllers/BookmarkController";
 import SessionController from "./controllers/SessionController";
 import AuthenticationController from "./controllers/AuthenticationController";
 import mongoose from "mongoose";
@@ -38,7 +42,7 @@ mongoose.connect(connectionString);
 const app = express();
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: 'http://localhost'
 }));
 
 const SECRET = 'process.env.SECRET';
@@ -69,7 +73,11 @@ app.get('/add/:a/:b', (req: Request, res: Response) =>
 const courseController = new CourseController(app);
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
-const likesController = LikeController.getInstance(app);
+LikeController.getInstance(app);
+DislikeController.getInstance(app);
+const followController = FollowController.getInstance(app);
+const bookmarksController = BookmarkController.getInstance(app);
+const messageController = MessageController.getInstance(app);
 SessionController(app);
 AuthenticationController(app);
 GroupController(app);

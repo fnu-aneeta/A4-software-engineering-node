@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import Tuit from "../models/tuits/Tuit";
 
 export default interface TuitControllerI {
+    createTuit(req: Request, res: Response): void;
     findAllTuits (req: Request, res: Response): void;
     findAllTuitsByUser (req: Request, res: Response): void;
     findTuitById (req: Request, res: Response): void;
