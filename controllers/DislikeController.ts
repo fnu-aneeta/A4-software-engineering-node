@@ -37,12 +37,12 @@ export class DislikeController implements DislikeControllerI {
     public static getInstance = (app: Express): DislikeController => {
         if (DislikeController.dislikeController === null) {
             DislikeController.dislikeController = new DislikeController();
-            app.get("api/users/:uid/dislikes", DislikeController.dislikeController.findAllTuitsDislikedByUser);
-            app.get("api/tuits/:tid/dislikes", DislikeController.dislikeController.findAllUsersThatDislikedTuit);
-            app.get("api/users/:uid/dislikes/:tid", DislikeController.dislikeController.doesUserDislikeTuit);
-            app.put("api/users/:uid/dislikes/:tid", DislikeController.dislikeController.userTogglesDislike);
-            app.post("api/users/:uid/dislike/:tid", DislikeController.dislikeController.userDislikesTuit);
-            app.delete("api/users/:uid/dislike/:tid", DislikeController.dislikeController.userUndislikesTuit);
+            app.get("/api/users/:uid/dislikes", DislikeController.dislikeController.findAllTuitsDislikedByUser);
+            app.get("/api/tuits/:tid/dislikes", DislikeController.dislikeController.findAllUsersThatDislikedTuit);
+            app.get("/api/users/:uid/dislikes/:tid", DislikeController.dislikeController.doesUserDislikeTuit);
+            app.put("/api/users/:uid/dislikes/:tid", DislikeController.dislikeController.userTogglesDislike);
+            app.post("/api/users/:uid/dislike/:tid", DislikeController.dislikeController.userDislikesTuit);
+            app.delete("/api/users/:uid/dislike/:tid", DislikeController.dislikeController.userUndislikesTuit);
         }
         return DislikeController.dislikeController;
     }

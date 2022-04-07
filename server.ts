@@ -42,7 +42,7 @@ mongoose.connect(connectionString);
 const app = express();
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost'
+    origin: 'http://localhost:3000'
 }));
 
 const SECRET = 'process.env.SECRET';
@@ -61,6 +61,7 @@ if (process.env.ENVIRONMENT === 'PRODUCTION') {
 }
 
 app.use(session(sess))
+
 app.use(express.json());
 
 app.get('/', (req: Request, res: Response) =>
@@ -73,11 +74,12 @@ app.get('/add/:a/:b', (req: Request, res: Response) =>
 const courseController = new CourseController(app);
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
-LikeController.getInstance(app);
-DislikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const bookmarksController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);
+const likeController = LikeController.getInstance(app);
+DislikeController.getInstance(app);
+
 SessionController(app);
 AuthenticationController(app);
 GroupController(app);

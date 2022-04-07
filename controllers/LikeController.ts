@@ -36,12 +36,12 @@ export class LikeController implements LikeControllerI {
     public static getInstance = (app: Express): LikeController => {
         if (LikeController.likeController === null) {
             LikeController.likeController = new LikeController();
-            app.get("/users/:uid/likes", LikeController.likeController.findAllTuitsLikedByUser);
-            app.get("/tuits/:tid/likes", LikeController.likeController.findAllUsersThatLikedTuit);
-            app.get("/users/:uid/likes/:tid", LikeController.likeController.doesUserLikeTuit);
-            app.put("/users/:uid/likes/:tid", LikeController.likeController.userTogglesLike);
-            app.post("/users/:uid/like/:tid", LikeController.likeController.userLikesTuit);
-            app.delete("/users/:uid/like/:tid", LikeController.likeController.userUnlikesTuit);
+            app.get("/api/users/:uid/likes", LikeController.likeController.findAllTuitsLikedByUser);
+            app.get("/api/tuits/:tid/likes", LikeController.likeController.findAllUsersThatLikedTuit);
+            app.get("/api/users/:uid/likes/:tid", LikeController.likeController.doesUserLikeTuit);
+            app.put("/api/users/:uid/likes/:tid", LikeController.likeController.userTogglesLike);
+            app.post("/api/users/:uid/like/:tid", LikeController.likeController.userLikesTuit);
+            app.delete("/api/users/:uid/like/:tid", LikeController.likeController.userUnlikesTuit);
         }
         return LikeController.likeController;
     }
